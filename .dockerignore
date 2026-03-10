@@ -1,0 +1,29 @@
+# Python virtual environments
+venv
+.venv
+
+# Python cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Git files
+.git
+.gitignore
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local dataset cache
+scikit_learn_data
+
+# Logs
+*.log
+
+# Docker files not needed in image
+docker-compose.yml
+
+# Development folders
+.env
