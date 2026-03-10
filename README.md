@@ -135,9 +135,11 @@ Example request:
 {
   "query": "space shuttle launch"
 }
+```
 
 Example response:
 
+```json
 {
   "query": "...",
   "cache_hit": true,
@@ -146,50 +148,67 @@ Example response:
   "result": "...",
   "dominant_cluster": 3
 }
+```
 Cache Statistics
+```
 GET /cache/stats
+```
 
 Example response:
 
+```json
 {
   "total_entries": 42,
   "hit_count": 17,
   "miss_count": 25,
   "hit_rate": 0.405
 }
-Clear Cache
-DELETE /cache
+```
 
+Clear Cache
+```
+DELETE /cache
+```
 Resets the semantic cache and statistics.
 
-Running the Project
-Local Setup
+# Running the Project
+
+***Local Setup***
 
 Install dependencies:
-
+```bash
 pip install -r requirements.txt
+```
 
 Start the API server:
-
+```bash
 uvicorn app.main:app --reload
+```
 
 Open the API documentation:
-
+```
 http://localhost:8000/docs
-Docker Deployment
+```
+
+# Docker Deployment
 
 Build the Docker image:
 
+```bash
 docker build -t semantic-search .
+```
 
 Run the container:
-
+```bash
 docker run -p 8000:8000 semantic-search
+```
 
 Then open:
-
+```
 http://localhost:8000/docs
-Project Structure
+```
+# Project Structure
+```
 semantic-search-system
 │
 ├── app
@@ -206,38 +225,39 @@ semantic-search-system
 ├── .gitignore
 ├── requirements.txt
 └── README.md
-Design Decisions
-Sentence Transformer Embeddings
+```
+# Design Decisions
+**Sentence Transformer Embeddings**
 
 Chosen for fast inference and strong semantic representation.
 
-Gaussian Mixture Clustering
+**Gaussian Mixture Clustering**
 
 Allows probabilistic cluster membership instead of rigid cluster assignments.
 
-Semantic Cache
+**Semantic Cache**
 
 Implemented from first principles without external caching frameworks.
 
-FastAPI
+**FastAPI**
 
 Provides a fast and lightweight API layer with automatic documentation.
 
-Future Improvements
+# Future Improvements
 
 Possible extensions include:
 
-persistent embedding storage
+- persistent embedding storage
 
-cluster visualization
+- cluster visualization
 
-distributed caching
+- distributed caching
 
-GPU acceleration
+- GPU acceleration
 
-scaling to larger datasets
+- scaling to larger datasets
 
-Conclusion
+# Conclusion
 
 This project demonstrates how semantic embeddings, fuzzy clustering, and intelligent caching can be combined to build an efficient semantic search system.
 
