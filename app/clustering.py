@@ -8,7 +8,8 @@ class FuzzyClusterer:
 
         self.model = GaussianMixture(
             n_components=n_clusters,
-            covariance_type='full',
+            covariance_type="diag",
+            reg_covar=1e-3,
             random_state=42
         )
 
