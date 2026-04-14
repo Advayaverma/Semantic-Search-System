@@ -146,7 +146,9 @@ Example response:
   "matched_query": "...",
   "similarity_score": 0.91,
   "result": "...",
-  "dominant_cluster": 3
+  "dominant_cluster": 3,
+  "dominant_cluster_name": "sci.space",
+  "processing_time_ms": 1.45
 }
 ```
 Cache Statistics
@@ -170,6 +172,21 @@ Clear Cache
 DELETE /cache
 ```
 Resets the semantic cache and statistics.
+
+System Health
+```
+GET /health
+```
+Checks if the system is running and if the models are loaded.
+
+Example response:
+```json
+{
+  "status": "healthy",
+  "faiss_loaded": true,
+  "cache_entries": 17
+}
+```
 
 # Running the Project
 
@@ -247,7 +264,7 @@ Provides a fast and lightweight API layer with automatic documentation.
 
 Possible extensions include:
 
-- persistent embedding storage
+- interactive frontend web application
 
 - cluster visualization
 
