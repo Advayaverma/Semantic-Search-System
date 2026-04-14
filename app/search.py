@@ -19,3 +19,13 @@ class VectorStore:
         scores, indices = self.index.search(query_vector, k)
 
         return indices[0], scores[0]
+
+    def save(self, filepath):
+        faiss.write_index(self.index, filepath)
+
+    @classmethod
+    def load(cls, filepath, embeddings):
+        instance = cls.__new__(cls)
+        instance.index = faiss.read_index(filepath)
+        instance.embeddings = embeddings
+        return instance

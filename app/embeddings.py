@@ -15,7 +15,7 @@ def load_dataset():
     # Remove very short documents (noise)
     documents = [doc for doc in documents if len(doc) > 50]
 
-    return documents
+    return documents, dataset.target_names
 
 
 # Load embedding model

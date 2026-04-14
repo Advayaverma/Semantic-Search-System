@@ -28,4 +28,17 @@ class FuzzyClusterer:
         probs = self.model.predict_proba([vector])[0]
 
         return int(np.argmax(probs))
+
+    def save(self, filepath):
+        import pickle
+        with open(filepath, 'wb') as f:
+            pickle.dump(self.model, f)
+
+    @classmethod
+    def load(cls, filepath):
+        import pickle
+        instance = cls.__new__(cls)
+        with open(filepath, 'rb') as f:
+            instance.model = pickle.load(f)
+        return instance
         

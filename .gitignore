@@ -26,3 +26,6 @@ scikit_learn_data/
 
 # Jupyter
 .ipynb_checkpoints
+
+# Persistent Data Storage
+data/

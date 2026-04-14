@@ -82,4 +82,26 @@ class SemanticCache:
         self.hit_count = 0
         self.miss_count = 0
 
+    def save(self, filepath):
+        import pickle
+        with open(filepath, 'wb') as f:
+            pickle.dump({
+                "entries": self.cache_entries,
+                "embeddings": self.cache_embeddings,
+                "hit_count": self.hit_count,
+                "miss_count": self.miss_count
+            }, f)
+
+    @classmethod
+    def load(cls, filepath, similarity_threshold=0.85, max_size=1000):
+        import pickle
+        instance = cls(similarity_threshold, max_size)
+        with open(filepath, 'rb') as f:
+            data = pickle.load(f)
+            instance.cache_entries = data["entries"]
+            instance.cache_embeddings = data["embeddings"]
+            instance.hit_count = data["hit_count"]
+            instance.miss_count = data["miss_count"]
+        return instance
+
         
