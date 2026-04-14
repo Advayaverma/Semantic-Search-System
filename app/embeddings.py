@@ -24,13 +24,13 @@ model = SentenceTransformer("all-MiniLM-L6-v2")
 
 def embed_documents(documents):
 
-    embeddings = model.encode(documents, show_progress_bar=True)
+    embeddings = model.encode(documents, show_progress_bar=True, normalize_embeddings=True)
 
     return np.array(embeddings)
 
 
 def embed_query(query):
 
-    embedding = model.encode([query])[0]
+    embedding = model.encode([query], normalize_embeddings=True)[0]
 
     return embedding

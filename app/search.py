@@ -7,7 +7,7 @@ class VectorStore:
 
         dim = embeddings.shape[1]
 
-        self.index = faiss.IndexFlatL2(dim)
+        self.index = faiss.IndexFlatIP(dim)
         self.index.add(embeddings)
 
         self.embeddings = embeddings
@@ -16,6 +16,6 @@ class VectorStore:
 
         query_vector = np.array([query_vector]).astype("float32")
 
-        distances, indices = self.index.search(query_vector, k)
+        scores, indices = self.index.search(query_vector, k)
 
-        return indices[0], distances[0]
+        return indices[0], scores[0]

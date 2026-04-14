@@ -1,32 +1,29 @@
 import numpy as np
-from sklearn.metrics.pairwise import cosine_similarity
 
 
 class SemanticCache:
 
-    def __init__(self, similarity_threshold=0.85):
+    def __init__(self, similarity_threshold=0.85, max_size=1000):
 
-        self.cache = []
+        self.cache_entries = []
+        self.cache_embeddings = None
         self.threshold = similarity_threshold
+        self.max_size = max_size
 
         self.hit_count = 0
         self.miss_count = 0
 
     def lookup(self, query_vector):
 
-        best_score = 0
-        best_entry = None
+        if self.cache_embeddings is None or len(self.cache_entries) == 0:
+            self.miss_count += 1
+            return {"hit": False}
 
-        for entry in self.cache:
+        # Vectorized dot product for cosine similarity (embeddings are pre-normalized)
+        scores = np.dot(self.cache_embeddings, query_vector)
 
-            score = cosine_similarity(
-                [query_vector],
-                [entry["embedding"]]
-            )[0][0]
-
-            if score > best_score:
-                best_score = score
-                best_entry = entry
+        best_idx = np.argmax(scores)
+        best_score = scores[best_idx]
 
         if best_score >= self.threshold:
 
@@ -34,7 +31,7 @@ class SemanticCache:
 
             return {
                 "hit": True,
-                "entry": best_entry,
+                "entry": self.cache_entries[best_idx],
                 "score": float(best_score)
             }
 
@@ -44,15 +41,25 @@ class SemanticCache:
 
     def store(self, query, embedding, result):
 
-        self.cache.append({
+        if len(self.cache_entries) >= self.max_size:
+            # Simple FIFO cache eviction
+            self.cache_entries.pop(0)
+            self.cache_embeddings = self.cache_embeddings[1:]
+
+        self.cache_entries.append({
             "query": query,
             "embedding": embedding,
             "result": result
         })
 
+        if self.cache_embeddings is None:
+            self.cache_embeddings = np.array([embedding])
+        else:
+            self.cache_embeddings = np.vstack([self.cache_embeddings, embedding])
+
     def stats(self):
 
-        total = len(self.cache)
+        total = len(self.cache_entries)
 
         hit_rate = (
             self.hit_count / (self.hit_count + self.miss_count)
@@ -64,12 +71,15 @@ class SemanticCache:
             "total_entries": total,
             "hit_count": self.hit_count,
             "miss_count": self.miss_count,
-            "hit_rate": hit_rate
+            "hit_rate": hit_rate,
+            "max_size": self.max_size
         }
 
     def clear(self):
 
-        self.cache = []
+        self.cache_entries = []
+        self.cache_embeddings = None
         self.hit_count = 0
         self.miss_count = 0
+
         
